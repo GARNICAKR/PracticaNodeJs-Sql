@@ -24,7 +24,12 @@ create: function(req,res){
     },
     show: (req,res)=>{
         Task.findByPk(req.params.id).then((task)=>{
-            res.json(task);
+            res.render('tasks/show',{task})
+        });
+    },
+    edit:(req,res)=>{
+        Task.findByPk(req.params.id).then((task)=>{
+            res.render('tasks/edit',{task});
         });
     },
     update:(req,res)=>{
@@ -33,13 +38,23 @@ create: function(req,res){
                 id: req.params.id
             }
         }).then((response)=>{
-            res.redirect('tasks/'+req.params.id);
-        })
+            res.redirect('/tasks/'+req.params.id);
+        });
     },
+    destroy:(req,res)=>{
+        Task.destroy({
+            where:{
+                id: req.params.id
+            }
+        }).then((contadorElementosEliminados)=>{
+            res.redirect('/tasks')
+        });
+    }
+    
 
 };
 
-   /*
+/*
 home: function(req,res){
     Task.findAll().then(function(tasks){
         res.render('tasks/index',{tasks: tasks});
